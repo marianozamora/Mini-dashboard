@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Mini Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+    <script type='text/javascript' src='jquery.min.js'></script>
+    <script data-require="angular.js@1.1.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js" data-semver="1.1.5"></script>
+    <script src="draganddrop.js"type="text/javascript"></script>
+    <script src="angularjs-nvd3-directives.js"type="text/javascript"></script>
+    <script src="d3.js"type="text/javascript"></script>
+    <script src="nv.d3.js"type="text/javascript"></script>
+    <link rel="stylesheet" href="nv.d3.css"/>
+    <script type="text/javascript" src="app5.js"></script>
+   </head>
+   
+	<style type="text/css">
+	body{
+		margin: 0px;
+		padding: 0px;
+	}
+    #cabecera {
+    	background-color: white;
+    	width: 100%;
+    	height: 100px;
+    }
+    #tipo1{
+        text-align: left;
+    }
+ 
+    #filtros{
+    	width:20%;
+    	height: 920px;
+    	position: absolute;
+    	left: 80%;
+    	background-color: #3f4944;
+    	border-color: black;
+    	text-align: right;
+    }
+    #divarrastrar {
+    	width:75%;
+    	height: 950px;
+    	text-align: center;
+    	background-color:rgb(225,219,202);
+    	margin-left: 30px;
+    	margin-top: 20px;
+    	border-radius:8px; 
+    	border-width: 1px;
+    	border-style: none;
+    	box-shadow: rgba(0,0,0,0.5)5px 5px 10px;
+    }
+    #arrastrar { 
+    	height: 890px;
+    	text-align: center;
+    	background-color:rgb(225,219,202);
+    	margin: 10px;
+    	border-radius:8px; 
+    	border-width: 3px;
+    	border-style: dashed;
+    	box-shadow: rgba(0,0,0,0.5)5px 5px 10px;
+    }
+    #idarrastrar
+    {
+    	margin:200px;
+    	text-align: center;
+    }
+	</style>
+<body ng-app="miapp" style="background-color:rgb(232,228,215)">
+  <div ng-controller="micontrolador">
+<header id="cabecera">
+	<div class="row topRow">
+       <h1 class="tipo1">--Distribuidora 1</h1>
+    </div>
+</header>
+    <aside id="filtros">
+    	
+			 <div id="info"class="panel panel-success " style="background-color:#3f4944;border-radius: 0px;padding:10px;">
+         <div id="ventas"class="panel-heading" style="background-color:rgb(210,217,227);border-radius:0px;"ui-on-Drop="onDrop($event,$data,men)">Filtro</div>
+
+           
+           <button type="button" class="btn btn-default btn-lg btn-block" style = "border-radius: 0px;" ui-draggable="true" drag="vendedor" 
+                        on-drop-success="dropSuccessHandler($event,$index,men)" >Vendedores</button>
+            <button type="button" class="btn btn-default btn-lg btn-block" style = "border-radius: 0px;">Clientes</button>
+             <button type="button" class="btn btn-default btn-lg btn-block" style = "border-radius: 0px;">Productos</button>
+              <button type="button" class="btn btn-default btn-lg btn-block" style = "border-radius: 0px;">Distritos</button>
+              <button type="button" class="btn btn-default btn-lg btn-block" style = "border-radius: 0px;">Linea del Producto</button>
+              <button type="button" class="btn btn-default btn-lg btn-block" style = "border-radius: 0px;">Cantidad Vendida</button>
+              <br>
+          
+            
+       <div id="info"class="panel panel-success " style="background-color:#3f4944;border-radius: 0px;">
+         <div id="ventas"class="panel-heading" style="background-color:rgb(161,189,157);border-radius:0px;">Columnas</div>
+           
+               
+                 <button type="button" class="btn btn-default btn-lg btn-block col-md-12" style = "border-radius: 0px; height:40px;"ui-on-Drop="onDrop($event,$data,women)"ui-draggable="true" drag="woman" on-drop-success="dropSuccessHandler($event,$index,women)" ></button>
+
+
+
+
+                 <button type="button" class="btn btn-default btn-lg btn-block col-md-12" style = "border-radius: 0px; height:40px;"></button>
+                 <button type="button" class="btn btn-default btn-lg btn-block col-md-12" style = "border-radius: 0px; height:40px;"></button>
+                   <button type="button" class="btn btn-default btn-lg btn-block col-md-12" style = "border-radius: 0px; height:40px;"></button>
+       
+                 
+                    
+
+          </div>
+        </div>
+      </div>
+
+    
+   
+        
+    </div> 
+
+		</div>
+		
+		
+    </aside>
+    <div id="divarrastrar" > 
+      <div class="panel panel-success" style="background-color:rgb(243,241,235);height: 970px;">
+
+              <div id="ventas2"class="panel-heading" ng-hide="ocultatitulo"style="background-color:#636365;color:white;">Cuadro de Mando</div>
+              <div  id="arrastrar"class="panel-body" ui-on-Drop="onDrop($event,$data,women)" style="text-align:center;" >
+                <h4 ng-show="titulograficoxd" style="text-align:left;margin-left:30px;"><b>Reporte Anual</b></h4>
+              <div id="idarrastrar" ng-hide="ultimo1"><h2>ARRASTRAR AQUI</h2></div>
+              <div  ui-draggable="true" drag="woman" on-drop-success="dropSuccessHandler($event,$index,women)" ng-hide="ocultagrafico">
+              	 <nvd3-multi-bar-chart 
+                  data="exampleData"
+                  id="exampleId"
+                  height="420"
+                  forcey="[0]"
+                  showXAxis="true"
+                  showYAxis="true"
+                  x="xFunction()"
+                  y="yFunction()"
+                  yAxisShowMaxMin="true"
+                  xAxisShowMaxMin="true"
+                  xAxisTickFormat="xAxisTickFormatFunction()"
+                  showLegend="true"
+                  showControls="false">
+                  <svg></svg>
+                 </nvd3-multi-bar-chart>
+               
+    </div>
+    <h4 ng-show="titulograficoxd" style="text-align:left;margin-left:30px;"><b>Detalle mes</b></h4>
+    <div style="height:360px;overflow:scroll;"ng-show="aparecetablaxd">
+     <table class="table table-striped" style="text-align:left;" ng-show="table" >
+                       <thead>
+                        <tr>
+                           <th><a href="" ng-click="ordenarPor('vendedor')">
+                           Mes</a><span class="caret" style="cursor:pointer" ng-click="ordenarPor('-vendedor')"></span></th>
+                           <th><a href="" ng-click="ordenarPor('venta')">Venta del mes</a></th>
+                           <th><a href="#" style="text-align:center;" >Avance por semanas</a></th>   
+                        </tr>
+                       </thead>
+                       <tbody>
+                        <tr bindonce ng-repeat="empleado in xd | filter:buscar" ng-click="asd(xd1[vendedoractual+empleado.0])"><!--llama al js  con el scope-->
+                           <td>{{empleado.0}}</td>
+                           <td>{{empleado.1 |currency}}</td>
+                            <td >
+                              <div style="width=100;
+                                     height=100px;">
+                                 <nvd3-line-chart
+                                    data="exampleData1"
+                                    showXAxis="true"
+                                    showYAxis="true"
+                                    tooltips="false"
+                                    interactive="false"
+                                    showLegend="true"
+                                    legendColor="legendColorFunction()">
+                                 </nvd3-line-chart>
+                              <div>
+                            </td>
+                          </tr>
+                         </tbody>
+                        </table>
+                                       
+    </div>
+
+      <div style="height:360px;overflow:scroll;"ng-show="aparecetabla1xd">
+     <table class="table table-striped" style="text-align:left;" ng-show="table" >
+                       <thead>
+                        <tr>
+                           <th><a href="" ng-click="ordenarPor('vendedor')">
+                           MERCADO</a><span class="caret" style="cursor:pointer" ng-click="ordenarPor('-vendedor')"></span></th>
+                           <th><a href="" ng-click="ordenarPor('venta')">TIPO DE NEGOCIO</a></th>
+                           <th><a href="#" style="text-align:center;" >GIRO</a></th>   
+                        </tr>
+                       </thead>
+                       <tbody>
+                        <tr ng-repeat="dist in mariano"><!--llama al js  con el scope-->
+                           <td>{{dist.0}}</td>
+                           <td>{{dist}}</td>
+                            <td >{{dist}}
+                            </td>
+                          </tr>
+                         </tbody>
+                        </table>
+  </div>
+      
+	</div>
+
+
+</div>
+</body>
+</html>
